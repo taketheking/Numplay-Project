@@ -1,4 +1,4 @@
-package Lv2;
+package Lv3;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -18,12 +18,10 @@ public class BaseballGame {
         } while (isDuplicate(randomNumber) || isZeroIn(randomNumber));
     }
 
-    public int play(Scanner scanner) {
-        int countGameNumber = 0;
+    public int play(Scanner scanner, BaseballGameDisplay display) {
+        int countTryNumber = 0;
         int countStrike;
         int countBall;
-
-        BaseballGameDisplay display = new BaseballGameDisplay();
 
         while (true) {
             System.out.println("숫자를 입력하세요");
@@ -35,7 +33,7 @@ public class BaseballGame {
                 continue;
             }
 
-            countGameNumber++;  // 3. 게임 진행횟수 증가
+            countTryNumber++;  // 3. 게임 진행횟수 증가
 
             countStrike = countStrike(inputNumber);   // 4. 스트라이크 개수 계산
 
@@ -57,7 +55,7 @@ public class BaseballGame {
         }
 
         // 게임 진행횟수 반환
-        return countGameNumber;
+        return countTryNumber;
     }
 
     // 올바른 입력값을 받았는지 검증
@@ -86,6 +84,7 @@ public class BaseballGame {
         return String.valueOf(number).contains("0");
     }
 
+
     // 3자리 수 확인
     void isThreeNumber(String number) throws Exception {
         if(number.length() != DigitNumberLength){
@@ -109,6 +108,8 @@ public class BaseballGame {
     public int getDuplicateCount(int number, int randomNumber) {
         HashSet<Integer> set = new HashSet<>();
         for (int i = 0; i < DigitNumberLength; i++) {
+            System.out.print("set- number : " + number%10);
+            System.out.println();
             set.add(number%10);
             number /= 10;
         }
@@ -118,6 +119,8 @@ public class BaseballGame {
             if (set.contains(randomNumber%10)) {
                 duplicateCount++;
             }
+            System.out.print("get- randomNumber : " + randomNumber%10);
+            System.out.println();
             randomNumber /= 10;
         }
 

@@ -12,23 +12,17 @@ public class BaseballGame {
 
     // 객체 생성시 정답을 만들도록 함
     public BaseballGame() {
-        while (true){
-            try {
-                randomNumber = getRandomThreeNumber();
-                if (isDuplicate(randomNumber)) {
-                    break;
-                }
-            }
-            catch (Exception e) {
-                System.out.println("올바르지 않은 입력값입니다.");
-            }
-        }
+        do {
+            randomNumber = getRandomThreeNumber();
 
+        } while (isDuplicate(randomNumber) || isZeroIn(randomNumber));
     }
 
     public int play() {
         Scanner scanner = new Scanner(System.in);
-        int countGameNumber = 0;
+        BaseballGameDisplay display = new BaseballGameDisplay();
+
+        int countTryNumber = 0;
         int countStrike;
         int countBall;
 
@@ -37,9 +31,12 @@ public class BaseballGame {
             String inputNumber = scanner.next(); // 1. 유저에게 입력값을 받음
             scanner.nextLine();
 
-            validateInput(inputNumber);  // 2. 올바른 입력값을 받았는지 검증
+            // 2. 올바른 입력값을 받았는지 검증
+            if(validateInput(inputNumber.trim())) {
+                continue;
+            }
 
-            countGameNumber++;  // 3. 게임 진행횟수 증가
+            countTryNumber++;  // 3. 게임 진행횟수 증가
 
             countStrike = countStrike(inputNumber);   // 4. 스트라이크 개수 계산
 
@@ -55,24 +52,25 @@ public class BaseballGame {
                 System.out.println("아웃");
             }
             else {
-                System.out.println(countStrike + "스트라이크 " + countBall+ "볼");
+                display.displayHint(countStrike, countBall);
             }
 
         }
 
-        scanner.close();
         // 게임 진행횟수 반환
-        return countGameNumber;
+        return countTryNumber;
     }
 
     // 올바른 입력값을 받았는지 검증
-    protected void validateInput(String input) {
+    protected boolean validateInput(String input) {
         try{
-            int number = isNumber(input.trim());         // 숫자 확인
-            isThreeNumber(input.trim());    // 세자리 확인
-            isDuplicate(number);        // 중복 숫자 확인
+            int number = isNumber(input);         // 숫자 확인
+            isThreeNumber(input);    // 세자리 확인
+            // 중복 숫자 확인
+            return isDuplicate(number);
         }catch (Exception e){
             System.out.println("올바르지 않은 입력값입니다.");
+            return true;
         }
     }
 
@@ -81,10 +79,16 @@ public class BaseballGame {
         return Integer.parseInt(input);
     }
 
+    // 0이 있는지 체크
+    public boolean isZeroIn(int number) {
+        return String.valueOf(number).contains("0");
+    }
+
+
     // 3자리 수 확인
     void isThreeNumber(String number) throws Exception {
         if(number.length() != DigitNumberLength){
-            throw new Exception("");
+            throw new Exception();
         }
     }
 
