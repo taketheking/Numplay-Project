@@ -26,8 +26,7 @@ public class BaseballGame {
 
     }
 
-    public int play() {
-        Scanner scanner = new Scanner(System.in);
+    public int play(Scanner scanner) {
         int countGameNumber = 0;
         int countStrike;
         int countBall;
@@ -37,7 +36,10 @@ public class BaseballGame {
             String inputNumber = scanner.next(); // 1. 유저에게 입력값을 받음
             scanner.nextLine();
 
-            validateInput(inputNumber);  // 2. 올바른 입력값을 받았는지 검증
+            // 2. 올바른 입력값을 받았는지 검증
+            if(validateInput(inputNumber)) {
+                continue;
+            }
 
             countGameNumber++;  // 3. 게임 진행횟수 증가
 
@@ -60,20 +62,21 @@ public class BaseballGame {
 
         }
 
-        scanner.close();
         // 게임 진행횟수 반환
         return countGameNumber;
     }
 
     // 올바른 입력값을 받았는지 검증
-    protected void validateInput(String input) {
+    protected boolean validateInput(String input) {
         try{
             int number = isNumber(input.trim());         // 숫자 확인
             isThreeNumber(input.trim());    // 세자리 확인
             isDuplicate(number);        // 중복 숫자 확인
         }catch (Exception e){
             System.out.println("올바르지 않은 입력값입니다.");
+            return true;
         }
+        return false;
     }
 
     // 숫자인지 확인
@@ -122,7 +125,6 @@ public class BaseballGame {
     // 3자리 랜덤 숫자 가져오기
     public int getRandomThreeNumber() {
         Random random = new Random();
-        random.setSeed(System.currentTimeMillis());
 
         return random.nextInt(900) + 100;      // 범위 0~899 -> 100~999 변경
     }
