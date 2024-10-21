@@ -45,7 +45,7 @@ public class BaseballGame {
             countBall = countBall(inputNumber);     // 6. 볼 개수 계산
 
             // 7. 힌트 출력
-            if(countBall == 3){
+            if(countBall == DigitNumberLength){
                 System.out.println("아웃");
             }
             else {
@@ -108,8 +108,6 @@ public class BaseballGame {
     public int getDuplicateCount(int number, int randomNumber) {
         HashSet<Integer> set = new HashSet<>();
         for (int i = 0; i < DigitNumberLength; i++) {
-            System.out.print("set- number : " + number%10);
-            System.out.println();
             set.add(number%10);
             number /= 10;
         }
@@ -119,8 +117,6 @@ public class BaseballGame {
             if (set.contains(randomNumber%10)) {
                 duplicateCount++;
             }
-            System.out.print("get- randomNumber : " + randomNumber%10);
-            System.out.println();
             randomNumber /= 10;
         }
 

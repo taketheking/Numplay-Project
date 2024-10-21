@@ -47,7 +47,7 @@ public class BaseballGame {
             countBall = countBall(inputNumber);     // 6. 볼 개수 계산
 
             // 7. 힌트 출력
-            if(countBall == 3){
+            if(countBall == DigitNumberLength){
                 System.out.println("아웃");
             }
             else {
