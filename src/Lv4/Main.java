@@ -5,15 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static Lv4.BaseballGame.setDigitNumberLength;
+import static Lv4.DigitNumberLength.setDigitNumberLength;
 
 public class Main {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-
         BaseballGameDisplay display = new BaseballGameDisplay();
-
         List<Integer> gameRecords = new ArrayList<>();
 
         int menuNumber;
@@ -43,7 +41,6 @@ public class Main {
                         System.out.println("3, 4, 5 자리 숫자 중에 선택해주세요.");
                         continue;
                     }
-
                     catch (Exception e) {
                         System.out.println("숫자가 아닌 값을 입력하셨습니다.");
                         continue;
