@@ -1,25 +1,20 @@
 package Lv3;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class BaseballGame {
 
     static final int  DigitNumberLength = 3;
 
-    int randomNumber;
+    List<Integer> randomNumber;
 
     // 객체 생성시 정답을 만들도록 함
     public BaseballGame() {
-        do {
-            randomNumber = getRandomThreeNumber();
-
-        } while (isDuplicate(randomNumber) || isZeroIn(randomNumber));
+        randomNumber = getRandomThreeNumber();
     }
 
-    public int play(Scanner scanner, BaseballGameDisplay display) {
-        int countTryNumber = 0;
+    public int play(Scanner scanner, Lv3.BaseballGameDisplay display) {
+        int countGameNumber = 0;
         int countStrike;
         int countBall;
 
@@ -33,16 +28,16 @@ public class BaseballGame {
                 continue;
             }
 
-            countTryNumber++;  // 3. 게임 진행횟수 증가
+            countGameNumber++;  // 3. 게임 진행횟수 증가
 
-            countStrike = countStrike(inputNumber);   // 4. 스트라이크 개수 계산
+            countStrike = countStrike(Integer.parseInt(inputNumber), this.randomNumber);   // 4. 스트라이크 개수 계산
 
             // 5. 정답여부 확인, 만약 정답이면 break 를 이용해 반복문 탈출
             if (countStrike == DigitNumberLength){
                 break;
             }
 
-            countBall = countBall(inputNumber);     // 6. 볼 개수 계산
+            countBall = countBall(Integer.parseInt(inputNumber), this.randomNumber);     // 6. 볼 개수 계산
 
             // 7. 힌트 출력
             if(countBall == DigitNumberLength){
@@ -55,18 +50,15 @@ public class BaseballGame {
         }
 
         // 게임 진행횟수 반환
-        return countTryNumber;
+        return countGameNumber;
     }
 
     // 올바른 입력값을 받았는지 검증
     protected boolean validateInput(String input) {
         try{
+            isThreeDigitNumber(input);            // 세자리 확인
             int number = isNumber(input);         // 숫자 확인
-            isThreeNumber(input);    // 세자리 확인
-            // 중복 숫자 확인
-            if(isDuplicate(number)){
-                throw new RuntimeException();
-            }
+            isDuplicate(number);                  // 중복 숫자 확인
             return false;
         }catch (Exception e){
             System.out.println("올바르지 않은 입력값입니다.");
@@ -79,64 +71,69 @@ public class BaseballGame {
         return Integer.parseInt(input);
     }
 
-    // 0이 있는지 체크
-    public boolean isZeroIn(int number) {
-        return String.valueOf(number).contains("0");
-    }
-
-
     // 3자리 수 확인
-    void isThreeNumber(String number) throws Exception {
+    void isThreeDigitNumber(String number) throws Exception {
         if(number.length() != DigitNumberLength){
             throw new Exception();
         }
     }
 
     // 자기 자신 중복 확인
-    public boolean isDuplicate(int number) {
+    void isDuplicate(Integer number) throws RuntimeException {
         HashSet<Integer> set = new HashSet<>();
-
         for (int i = 0; i < DigitNumberLength; i++) {
             set.add(number%10);
             number /= 10;
         }
-        return set.size() != DigitNumberLength;
+        if(set.size() != DigitNumberLength){
+            throw new RuntimeException();
+        }
     }
 
 
-    // 정답과 중복 확인
-    public int getDuplicateCount(int number, int randomNumber) {
-        HashSet<Integer> set = new HashSet<>();
-        for (int i = 0; i < DigitNumberLength; i++) {
-            set.add(number%10);
-            number /= 10;
-        }
+    // 3자리 랜덤 숫자 가져오기
+    public List<Integer> getRandomThreeNumber() {
+        Random random = new Random();
+        List<Integer> list = new ArrayList<>();
 
+        while (list.size() != DigitNumberLength) {
+            random.setSeed(System.currentTimeMillis());
+            int randomNumber = random.nextInt(9) + 1;
+            if(list.contains(randomNumber)){
+                continue;
+            }
+            list.add(randomNumber);
+        }
+        return list;
+    }
+
+
+    // 스트라이크 계산
+    private int countStrike(int inputNumber, List<Integer> randomNumber) {
         int duplicateCount = 0;
+
         for (int i = 0; i < DigitNumberLength; i++) {
-            if (set.contains(randomNumber%10)) {
+            if (randomNumber.get(i) == inputNumber%10) {
                 duplicateCount++;
             }
-            randomNumber /= 10;
+            inputNumber /= 10;
         }
 
         return duplicateCount;
     }
 
-    // 3자리 랜덤 숫자 가져오기
-    public int getRandomThreeNumber() {
-        Random random = new Random();
-        random.setSeed(System.currentTimeMillis());
+    // 볼 계산
+    private int countBall(int inputNumber, List<Integer> randomNumber) {
+        int duplicateCount = 0;
 
-        return random.nextInt(900) + 100;      // 범위 0~899 -> 100~999 변경
-    }
+        for (int i = 0; i < DigitNumberLength; i++) {
+            int digitNumber = inputNumber%10;
+            if (randomNumber.contains(digitNumber) && randomNumber.get(i) != digitNumber) {
+                duplicateCount++;
+            }
+            inputNumber /= 10;
+        }
 
-
-    private int countStrike(String input) {
-        return getDuplicateCount(Integer.parseInt(input), this.randomNumber);
-    }
-
-    private int countBall(String input) {
-        return DigitNumberLength - getDuplicateCount(Integer.parseInt(input), this.randomNumber);
+        return duplicateCount;
     }
 }
