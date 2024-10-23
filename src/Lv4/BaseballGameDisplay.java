@@ -13,4 +13,11 @@ public class BaseballGameDisplay {
             System.out.println((i+1) + "번째 게임 : 시도 횟수 - " + list.get(i));
         }
     }
+
+    public void displayRecords2(List<Integer> list) {
+        System.out.println("< 게임 기록 보기 >");
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println((i+1) + "번째 게임 : 시도 횟수 - " + list.get(i));
+        }
+    }
 }
