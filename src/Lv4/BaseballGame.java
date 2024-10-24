@@ -8,30 +8,29 @@ import java.util.Scanner;
 import static Lv4.DigitNumberLength.getDigitNumberLength;
 
 
-public class BaseballGame {
+class BaseballGame {
 
      Validate validate = new Validate();
 
-    // 랜덤 숫자
-    List<Integer> randomNumber;
+    private final List<Integer> randomNumber;
 
     // 객체 생성시 정답을 만들도록 함
-    public BaseballGame() {
-        randomNumber = getRandomThreeNumber();
+    BaseballGame() {
+        randomNumber = getRandomNumbers();
     }
 
-    public int play(Scanner scanner, BaseballGameDisplay display) {
+    int play(Scanner scanner, BaseballGameDisplay display) {
         int countTryNumber = 0;
         int countStrike;
         int countBall;
 
         while (true) {
             System.out.println("숫자를 입력하세요");
-            String inputNumber = scanner.next(); // 1. 유저에게 입력값을 받음
+            String inputNumber = scanner.next().trim(); // 1. 유저에게 입력값을 받음
             scanner.nextLine();
 
             // 2. 올바른 입력값을 받았는지 검증
-            if(validate.validateInput(inputNumber.trim())) {
+            if(validate.validateInput(inputNumber)) {
                 continue;
             }
 
@@ -47,7 +46,7 @@ public class BaseballGame {
             countBall = countBall(Integer.parseInt(inputNumber), this.randomNumber);     // 6. 볼 개수 계산
 
             // 7. 힌트 출력
-            if(countBall == getDigitNumberLength()){
+            if(isOutNumbers(countStrike, countBall)) {
                 System.out.println("아웃");
             }
             else {
@@ -80,6 +79,7 @@ public class BaseballGame {
 
         for (int i = 0; i < getDigitNumberLength(); i++) {
             int digitNumber = inputNumber%10;
+
             if (randomNumber.contains(digitNumber) && randomNumber.get(i) != digitNumber) {
                 duplicateCount++;
             }
@@ -90,19 +90,24 @@ public class BaseballGame {
     }
 
     // 3자리 랜덤 숫자 가져오기
-    public List<Integer> getRandomThreeNumber() {
+    private List<Integer> getRandomNumbers() {
         Random random = new Random();
-        List<Integer> list = new ArrayList<>();
+        List<Integer> randomlist = new ArrayList<>();
 
-        while (list.size() != getDigitNumberLength()) {
+        while (randomlist.size() != getDigitNumberLength()) {
             random.setSeed(System.currentTimeMillis());
             int randomNumber = random.nextInt(9) + 1;
-            if(list.contains(randomNumber)){
+
+            if(randomlist.contains(randomNumber)){
                 continue;
             }
-            list.add(randomNumber);
+            randomlist.add(randomNumber);
         }
-        return list;
+        return randomlist;
+    }
+
+    private boolean isOutNumbers(int strike, int ball) {
+        return strike == 0 && ball == 0;
     }
 
 }

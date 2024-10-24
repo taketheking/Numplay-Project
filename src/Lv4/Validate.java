@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 import static Lv4.DigitNumberLength.getDigitNumberLength;
 
-public class Validate {
+class Validate {
 
     // 올바른 입력값을 받았는지 검증
     protected boolean validateInput(String input) {
@@ -20,13 +20,13 @@ public class Validate {
     }
 
     // 숫자인지 확인
-    Integer isNumber(String input) throws NumberFormatException {
+    int isNumber(String input) throws NumberFormatException {
         return Integer.parseInt(input);
     }
 
     // 3자리 수 확인
     void isThreeDigitNumber(String number) throws Exception {
-        if(number.length() != getDigitNumberLength()){
+        if(number.length() != getDigitNumberLength()) {
             throw new Exception();
         }
     }
@@ -34,10 +34,12 @@ public class Validate {
     // 자기 자신 중복 확인
     void isDuplicate(Integer number) throws RuntimeException {
         HashSet<Integer> set = new HashSet<>();
+
         for (int i = 0; i < getDigitNumberLength(); i++) {
             set.add(number%10);
             number /= 10;
         }
+
         if(set.size() != getDigitNumberLength()){
             throw new RuntimeException();
         }

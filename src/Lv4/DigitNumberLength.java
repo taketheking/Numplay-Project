@@ -2,7 +2,7 @@ package Lv4;
 
 public class DigitNumberLength {
     // 자리수 길이
-    static int DigitNumberLength = 3;
+    private static int DigitNumberLength = 3;
 
     public static void setDigitNumberLength(int digitNumberLength) throws IllegalArgumentException {
         if(digitNumberLength < 3 || digitNumberLength > 5){
