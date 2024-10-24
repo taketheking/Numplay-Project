@@ -4,9 +4,9 @@ public class DigitNumberLength {
     // 자리수 길이
     private static int DigitNumberLength = 3;
 
-    public static void setDigitNumberLength(int digitNumberLength) throws IllegalArgumentException {
+    public static void setDigitNumberLength(int digitNumberLength) {
         if(digitNumberLength < 3 || digitNumberLength > 5){
-            throw new IllegalArgumentException("digitNumberLength must be between 3 and 5");
+            throw new IllegalArgumentException();
         }
         DigitNumberLength = digitNumberLength;
     }

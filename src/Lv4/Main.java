@@ -2,6 +2,7 @@ package Lv4;
 
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,7 +27,7 @@ public class Main {
                 menuNumber = sc.nextInt();
                 sc.nextLine();
             }
-            catch (Exception e) {
+            catch (InputMismatchException e) {
                 System.out.println("숫자가 아닌 값을 입력하셨습니다.");
                 continue;
             }
@@ -41,7 +42,7 @@ public class Main {
                         System.out.println("3, 4, 5 자리 숫자 중에 선택해주세요.");
                         continue;
                     }
-                    catch (Exception e) {
+                    catch (InputMismatchException e) {
                         System.out.println("숫자가 아닌 값을 입력하셨습니다.");
                         continue;
                     }
@@ -63,13 +64,13 @@ public class Main {
                 case 3:
                     System.out.println();
                     System.out.println("< 숫자 야구 게임을 종료합니다 >");
+                    sc.close();
                     return;
 
                 default:
                     System.out.println("올바른 숫자를 입력해 주세요!");
             }
-
         }
-       }
+    }
 }
 
