@@ -40,7 +40,7 @@ public class BaseballGame {
             countBall = countBall(Integer.parseInt(inputNumber), this.randomNumber);     // 6. 볼 개수 계산
 
             // 7. 힌트 출력
-            if(countBall == DigitNumberLength){
+            if(countBall == 0 && countStrike == 0){
                 System.out.println("아웃");
             }
             else {
